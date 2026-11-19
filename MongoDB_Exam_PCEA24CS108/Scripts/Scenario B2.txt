@@ -1,0 +1,98 @@
+scenario B2
+
+
+db.books.insertMany([
+    {
+        _id: 1,
+        title: "Database Systems",
+        author: "Elmasri",
+        copies: 5,
+        status: "available"
+    },
+    {
+        _id: 2,
+        title: "Operating Systems",
+        author: "Galvin",
+        copies: 3,
+        status: "available"
+    },
+    {
+        _id: 3,
+        title: "Computer Networks",
+        author: "Tanenbaum",
+        copies: 0,
+        status: "unavailable"
+    },
+    {
+        _id: 4,
+        title: "Old Almanac 1990",
+        author: "Unknown",
+        copies: 0,
+        status: "unavailable"
+    },
+    {
+        _id: 5,
+        title: "Torn Notes",
+        author: "Unknown",
+        copies: 0,
+        status: "damaged"
+    },
+    {
+        _id: 6,
+        title: "Water-damaged Atlas",
+        author: "Unknown",
+        copies: 1,
+        status: "damaged"
+    }
+])
+
+db.books.updateOne(
+    { title: "Operating Systems" },
+    { $inc: { copies: 2 } }
+)
+
+db.books.updateOne(
+    { title: "Database Systems" },
+    { $inc: { copies: -1 } }
+)
+
+db.books.updateOne(
+    { title: "Artificial Intelligence" },
+    {
+        $set: {
+            author: "Russell",
+            copies: 4,
+            status: "available"
+        }
+    },
+    { upsert: true }
+)
+
+db.books.updateOne(
+    { title: "Computer Networks" },
+    {
+        $set: { status: "available" },
+        $inc: { copies: 3 }
+    }
+)
+
+db.books.deleteOne(
+    { title: "Old Almanac 1990" }
+)
+
+db.books.deleteMany(
+    {
+        status: { $in: ["damaged", "lost"] }
+    }
+)
+
+db.books.find(
+    {},
+    {
+        _id: 0,
+        title: 1,
+        copies: 1
+    }
+).sort({ title: 1 })
+
+
